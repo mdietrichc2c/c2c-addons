@@ -1,0 +1,35 @@
+-
+  I change the currency of the default pricelist to PLN
+-
+  !record {model: product.pricelist, id: purchase.list0}:
+    currency_id: base.PLN
+-
+  I create an invoice
+-
+  !record {model: purchase.order, id: invoice1}:
+    partner_id: base.res_partner_1
+    invoice_line_ids:
+      - product_id: product.product_product_1
+      - product_id: product.product_product_2
+-
+  I confirm it
+-
+  !workflow {model: account.invoice, action: invoice_open, ref: invoice1}
+-
+  I check that the currency is PLN
+-
+  !assert {model: account.invoice, id: invoice1}:
+    - currency_id.name == u'PLN'
+-
+  I check the total
+-
+  !assert {model: account.invoice, id: invoice1}:
+    - amount_untaxed == 188.62
+-
+  I check the total in alternate currencies and the rates
+-
+  !assert {model: account.invoice, id: invoice1}:
+    - rate_eur == 0.243873
+    - rate_usd == 0.317035
+    - amount_untaxed_eur == 46.00
+    - amount_untaxed_usd == 59.80

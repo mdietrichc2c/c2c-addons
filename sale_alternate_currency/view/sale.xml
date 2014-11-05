@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+
+    <record id="view_order_form" model="ir.ui.view">
+      <field name="name">sale.order.form</field>
+      <field name="model">sale.order</field>
+      <field name="inherit_id" ref="sale.view_order_form"/>
+      <field
+        name="groups_id"
+        eval="[(6, 0, [ref('base.group_multi_currency')])]"/>
+      <field name="arch" type="xml">
+
+        <notebook position="inside">
+          <page string="Other Currencies"
+            attrs="{'invisible': [('state','in', ('draft', 'sent'))]}">
+            <group>
+              <group>
+                <field name="amount_untaxed_eur"/>
+                <field name="amount_untaxed_usd"/>
+              </group>
+              <group>
+                <field name="rate_eur"/>
+                <field name="rate_usd"/>
+              </group>
+            </group>
+          </page>
+        </notebook>
+      </field>
+    </record>
+
+    <record id="view_order_tree" model="ir.ui.view">
+      <field name="name">sale.order.tree</field>
+      <field name="model">sale.order</field>
+      <field name="inherit_id" ref="sale.view_order_tree"/>
+      <field
+        name="groups_id"
+        eval="[(6, 0, [ref('base.group_multi_currency')])]"/>
+      <field name="arch" type="xml">
+        <field name="amount_total" position="replace">
+          <field name="currency_id" string="Currency"/>
+          <field name="amount_total"/>
+          <field name="amount_untaxed_eur" sum="Total Untaxed EUR"/>
+          <field name="amount_untaxed_usd" sum="Total Untaxed USD"/>
+        </field>
+      </field>
+    </record>
+
+    <record id="view_quotation_tree" model="ir.ui.view">
+      <field name="name">sale.order.tree</field>
+      <field name="model">sale.order</field>
+      <field name="inherit_id" ref="sale.view_quotation_tree"/>
+      <field
+        name="groups_id"
+        eval="[(6, 0, [ref('base.group_multi_currency')])]"/>
+      <field name="arch" type="xml">
+        <field name="amount_total" position="replace">
+          <field name="currency_id" string="Currency"/>
+          <field name="amount_total"/>
+          <field name="amount_untaxed" string="Untaxed"/>
+          <field name="amount_untaxed_eur" sum="Total Untaxed EUR"/>
+          <field name="amount_untaxed_usd" sum="Total Untaxed USD"/>
+        </field>
+      </field>
+    </record>
+
+  </data>
+</openerp>

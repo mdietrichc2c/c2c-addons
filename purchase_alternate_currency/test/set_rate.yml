@@ -1,0 +1,10 @@
+-
+  I set currency rates for USD because we don't know today's date
+-
+  !record {model: res.currency.rate, id: base.rateUSD}:
+    rate: 1.3
+-
+  I set the same date for the second half of the year
+-
+  !record {model: res.currency.rate, id: base.rateUSDbis}:
+    rate: 1.3

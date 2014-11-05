@@ -1,0 +1,36 @@
+-
+  I change the currency of the default pricelist to PLN
+-
+  !record {model: product.pricelist, id: product.list0}:
+    currency_id: base.PLN
+-
+  I create a sale order
+-
+  !record {model: sale.order, id: order1}:
+    partner_id: base.res_partner_1
+    order_line:
+      - product_id: product.product_product_1
+        product_uom_qty: 5
+      - product_id: product.product_product_2
+-
+  I confirm it
+-
+  !workflow {model: sale.order, action: order_confirm, ref: order1}
+-
+  I check that the currency is PLN
+-
+  !assert {model: sale.order, id: order1}:
+    - currency_id.name == u'PLN'
+-
+  I check the total
+-
+  !assert {model: sale.order, id: order1}:
+    - amount_untaxed == 787.29
+-
+  I check the total in alternate currencies and the rates
+-
+  !assert {model: sale.order, id: order1}:
+    - rate_eur == 0.243873
+    - rate_usd == 0.317035
+    - amount_untaxed_eur == 192.00
+    - amount_untaxed_usd == 249.60
